@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,27 +27,39 @@ public class MatriceDAdjacence extends Graph{
 			}
 		}
 		matrice = matriceClone;
+		correspondanceAirportIndice.put(a,nbAirport);
+		correspondanceIndiceAirport.put(nbAirport,a);
 		nbAirport++;
-		// TODO ? PAS TESTER
 	}
 
 	@Override
 	// Complexité: ?
 	protected void ajouterArc(Flight f) {
-		//à compléter
+		matrice[correspondanceAirportIndice.get(f.getSource())][correspondanceAirportIndice.get(f.getDestination())] = f;
 	}
 
 	@Override
 	// Complexité: ?
 	public Set<Flight> arcsSortants(Airport a) {
-		//à compléter
-		return null;
+		Set<Flight> flights = new HashSet<>();
+		int indexAirport = correspondanceAirportIndice.get(a);
+		for (int i = 0 ; i<nbAirport;i++){
+			if (matrice[indexAirport][i] != null){
+				flights.add(matrice[indexAirport][i]);
+			}
+		}
+		return flights;
 	}
 
 	@Override
 	// Complexité: ?
 	public boolean sontAdjacents(Airport a1, Airport a2) {
-		// à compléter
+		int indA1 = correspondanceAirportIndice.get(a1);
+		int indA2 = correspondanceAirportIndice.get(a2);
+
+		if (matrice[indA1][indA2]!= null) return true;
+		if (matrice[indA2][indA1]!= null) return true;
+
 		return false;
 	}
 	
