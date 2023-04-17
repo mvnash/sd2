@@ -1,3 +1,8 @@
+import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
 public class Trees {
 
     // *******************************************************
@@ -105,20 +110,48 @@ public class Trees {
 
     // 1.5)
     public static int depth(Tree n) {
-        return 42;
+        if (n.getParent() == null)
+            return 0;
+
+        return depth(n.getParent()) + 1;
     }
 
     // 1.6)
     public static boolean sameOne(Tree n1, Tree n2) {
-        return true;
+
+        if (n1.getParent() != null){
+            return sameOne(n1.getParent(),n2);
+        }
+
+        if (n2.getParent() != null){
+            return sameOne(n1,n2.getParent());
+        }
+
+        return n1 == n2;
     }
 
     // 1.7)
     public static void dfsPrint(Tree t) {
+        System.out.println(t.getValue());
+
+        for (Tree tree : t.getChildren()) {
+            dfsPrint(tree);
+        }
     }
 
     // 1.8)
     public static void bfsPrint(Tree t) {
+        ArrayDeque<Tree> deque = new ArrayDeque<>();
+        deque.add(t);
+        dequePrinter(deque);
+    }
+
+    private static void dequePrinter(Deque<Tree> deque){
+        Tree premier = deque.removeFirst();
+        System.out.println(premier.getValue());
+        deque.addAll(Arrays.asList(premier.getChildren()));
+
+        if (!deque.isEmpty()) dequePrinter(deque);
     }
 
     // *******************************************************
@@ -127,10 +160,19 @@ public class Trees {
 
     // 2.1)
     static void printPathV1(Tree node) {
+        if (node==null) return;
+
+        System.out.println(node.getValue());
+
+        printPathV1(node.getParent());
     }
 
     // 2.2)
     static void printPathV2(Tree node) {
+        while (node != null){
+            System.out.println(node.getValue());
+            node = node.getParent();
+        }
     }
 
     // 2.3
